@@ -1,0 +1,21 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - qemu-guest-agent
+
+timezone: Europe/Oslo
+users:
+  - name: devops
+    passwd: "$6$8AXnfVEn5SPdsEbe$bCe5ho6RiN8rgYH27/OyETEoj2lYv/8feToxSWOfPw.LRtRirMDr7ESD/CEPH6yWeEAwv9J244CMzEBfkIrcS."
+    groups: [adm, cdrom, dip, plugdev, lxd, sudo]
+    lock-passwd: false
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDogMdWfrqX1XAc231blwxM9x3STfWdTZ84n+vu3/WM+p+6GS1Ob3FMWZB5ob1hatbrGt1ciBwbuGSiNgNWfInuOFWeF6AnBKszbuqA0q/0qTg94etDBXfG7onuAQOCH+YeosuSj2GsgdQEpGV8z2UasDICnpWjzkZ9E3Bl2pEiPCtC+lT4AB2IqL+z+Npvi1PnZ1B9JThEFioT5Ja3AOLhMxkIOgLHos7ksjlc6u9QMU3pgFHvAjYWS8plusYwrtPVHQ+8YQQvpklMaTdJOSaGCbHEwvjmItI5AxHl6IvcnpFTAhLbnmE6YaiEfGudwI9RmDeWu5/jBdmjpB4c26ZrBYnJYhB8Gr62uGydKTLFJzUXDokpFtUjEDFLRAKnWfu1wddMej3UuT1IC0L6u+hjwk78oPdsPfFgTMLL8RCHaFsgmSNCCVLLy+CWbleze3+ihs+Bs+SiGDvcT9m3zxusa7IFg6cTz4mcAqVZ/ZYvQ9Vj2BCoKr2ppmvNiJcZGmc= lanil@AZTEK-PC27RF42"
+
+power_state:
+    delay: now
+    mode: reboot
+    message: Rebooting after cloud-init completion
+    condition: true

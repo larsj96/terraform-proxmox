@@ -1,0 +1,31 @@
+stages:
+  - apply
+  - netbox
+image:
+  name: harbor.home.hoeg.li/infra/terraform:latest
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+before_script:
+    - echo ${gitlab_address}
+    - export TF_CLI_ARGS_apply="-parallelism=2"
+    - echo ${CI_PROJECT_ID}
+    - echo ${TF_HTTP_ADDRESS}
+    - export TF_HTTP_ADDRESS=${TF_HTTP_ADDRESS}
+    - export TF_HTTP_USERNAME=${TF_HTTP_USERNAME}
+    - export TF_HTTP_PASSWORD=${TF_HTTP_PASSWORD}
+    - export PROXMOX_VE_ENDPOINT=${PM_API_URL}
+    - export PM_API_TOKEN_ID="${PM_API_TOKEN_ID}"
+    - export PM_API_TOKEN_SECRET="${PM_API_TOKEN_SECRET}"
+    - export proxmox_host=${proxmox_host}
+    - terraform --version
+    - terraform init
+    
+apply:
+  stage: apply
+  script:
+    - terraform apply -input=false --auto-approve
+netbox:
+  stage: netbox
+  script:
+    - curl -X POST -F token=$NETBOX_PIPELINE -F ref=main "https://git.home.hoeg.li/api/v4/projects/12/trigger/pipeline"
