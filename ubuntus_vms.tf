@@ -1,10 +1,80 @@
-resource "proxmox_virtual_environment_vm" "ubuntu_vm2" {
-  name        = "terraform-provider-proxmox-ubuntu-vm2"
+locals {
+  ubuntu_vms = {
+
+    ubuntu-master1 = {
+      "num_cpus" = "4"
+      "memory"   = "16192"
+      "disksize" = 100
+      vlan       = "12"
+    }
+
+    ubuntu-master2 = {
+      "num_cpus" = "4"
+      "memory"   = "16192"
+      "disksize" = 100
+      vlan       = "12"
+    }
+
+    ubuntu-master3 = {
+      "num_cpus" = "4"
+      "memory"   = "16192"
+      "disksize" = 100
+      vlan       = "12"
+    }
+
+
+    ubuntu-work1 = {
+      "num_cpus" = "4"
+      "memory"   = "16192"
+      "disksize" = 125
+      vlan       = "12"
+    }
+
+    ubuntu-work2 = {
+      "num_cpus" = "4"
+      "memory"   = "16192"
+      "disksize" = 125
+      vlan       = "12"
+    }
+
+    ubuntu-work3 = {
+      "num_cpus" = "4"
+      "memory"   = "16192"
+      "disksize" = 125
+      vlan       = "12"
+
+    }
+
+  }
+}
+
+
+
+
+
+
+resource "proxmox_virtual_environment_vm" "ubuntu_vms" {
+
+  for_each = local.ubuntu_vms
+
+
+  name        = each.key
   description = "Managed by Terraform"
   tags        = ["terraform", "ubuntu"]
 
   node_name = "hp1"
-  vm_id     = 4321
+
+
+
+ memory {
+  dedicated = each.value.memory
+ }
+
+ cpu {
+  cores = each.value.num_cpus
+ }
+
+
 
   agent {
     # read 'Qemu guest agent' section, change to true only when ready ( this is been added to  cloud init - see proxmox_virtual_environment_file.tf )
@@ -21,6 +91,7 @@ resource "proxmox_virtual_environment_vm" "ubuntu_vm2" {
     datastore_id = "nvme"
     file_id      = proxmox_virtual_environment_download_file.latest_ubuntu_22_jammy_qcow2_img.id
     interface    = "scsi0"
+    size = each.value.disksize
   }
 
   initialization {
@@ -37,14 +108,14 @@ resource "proxmox_virtual_environment_vm" "ubuntu_vm2" {
     }
 
     # user_data_file_id = proxmox_virtual_environment_file.cloud_config.id
-   # user_data_file_id = base64encode(file("cloud-init/user-data.yml"))
-       user_data_file_id = proxmox_virtual_environment_file.cloud_config.id
+    # user_data_file_id = base64encode(file("cloud-init/user-data.yml"))
+    user_data_file_id = proxmox_virtual_environment_file.cloud_config.id
 
   }
 
   network_device {
-    bridge = "vmbr1"
-        vlan_id = "12"
+    bridge  = "vmbr1"
+    vlan_id = each.value.vlan
   }
 
   operating_system {

@@ -1,47 +1,47 @@
 locals {
-    talos-cp1 = {
-      "num_cpus" = "4"
-      "memory"   = "16192"
-      "disksize" = 100
-      vlan       = "12"
-    }
+  talos-cp1 = {
+    "num_cpus" = "4"
+    "memory"   = "16192"
+    "disksize" = 100
+    vlan       = "12"
+  }
 
-    talos-cp2 = {
-      "num_cpus" = "4"
-      "memory"   = "16192"
-      "disksize" = 100
-      vlan       = "12"
-    }
+  talos-cp2 = {
+    "num_cpus" = "4"
+    "memory"   = "16192"
+    "disksize" = 100
+    vlan       = "12"
+  }
 
-    talos-cp3 = {
-      "num_cpus" = "4"
-      "memory"   = "16192"
-      "disksize" = 100
-      vlan       = "12"
-    }
+  talos-cp3 = {
+    "num_cpus" = "4"
+    "memory"   = "16192"
+    "disksize" = 100
+    vlan       = "12"
+  }
 
 
-    talos-work1 = {
-      "num_cpus" = "4"
-      "memory"   = "16192"
-      "disksize" = 125
-      vlan       = "12"
-    }
+  talos-work1 = {
+    "num_cpus" = "4"
+    "memory"   = "16192"
+    "disksize" = 125
+    vlan       = "12"
+  }
 
-    talos-work2 = {
-      "num_cpus" = "4"
-      "memory"   = "16192"
-      "disksize" = 125
-      vlan       = "12"
-    }
+  talos-work2 = {
+    "num_cpus" = "4"
+    "memory"   = "16192"
+    "disksize" = 125
+    vlan       = "12"
+  }
 
-    talos-work3 = {
-      "num_cpus" = "4"
-      "memory"   = "16192"
-      "disksize" = 125
-      vlan       = "12"
+  talos-work3 = {
+    "num_cpus" = "4"
+    "memory"   = "16192"
+    "disksize" = 125
+    vlan       = "12"
 
-    }
+  }
 
 }
 
