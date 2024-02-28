@@ -127,6 +127,16 @@ resource "proxmox_virtual_environment_vm" "ubuntu_vms" {
   }
 
   serial_device {}
+
+ lifecycle { 
+   ignore_changes = [
+      # Ignore changes to tags, e.g. because a management agent
+      # updates these based on some ruleset managed elsewhere.
+      initialization,
+   ]
+ }
+
+
 }
 
 resource "proxmox_virtual_environment_download_file" "latest_ubuntu_22_jammy_qcow2_img" {
