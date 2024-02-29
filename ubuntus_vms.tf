@@ -101,14 +101,7 @@ resource "proxmox_virtual_environment_vm" "ubuntu_vms" {
       }
     }
 
-    user_account {
-      keys     = [trimspace(tls_private_key.ubuntu_vm_key.public_key_openssh)]
-      password = random_password.ubuntu_vm_password.result
-      username = "ubuntu"
-    }
 
-    # user_data_file_id = proxmox_virtual_environment_file.cloud_config.id
-    # user_data_file_id = base64encode(file("cloud-init/user-data.yml"))
     user_data_file_id = proxmox_virtual_environment_file.cloud_config.id
 
   }
@@ -130,8 +123,6 @@ resource "proxmox_virtual_environment_vm" "ubuntu_vms" {
 
  lifecycle { 
    ignore_changes = [
-      # Ignore changes to tags, e.g. because a management agent
-      # updates these based on some ruleset managed elsewhere.
       initialization,
    ]
  }
@@ -144,29 +135,4 @@ resource "proxmox_virtual_environment_download_file" "latest_ubuntu_22_jammy_qco
   datastore_id = "snippetsogISO"
   node_name    = "hp1"
   url          = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
-}
-
-resource "random_password" "ubuntu_vm_password" {
-  length           = 16
-  override_special = "_%@"
-  special          = true
-}
-
-resource "tls_private_key" "ubuntu_vm_key" {
-  algorithm = "RSA"
-  rsa_bits  = 2048
-}
-
-output "ubuntu_vm_password" {
-  value     = random_password.ubuntu_vm_password.result
-  sensitive = true
-}
-
-output "ubuntu_vm_private_key" {
-  value     = tls_private_key.ubuntu_vm_key.private_key_pem
-  sensitive = true
-}
-
-output "ubuntu_vm_public_key" {
-  value = tls_private_key.ubuntu_vm_key.public_key_openssh
 }
