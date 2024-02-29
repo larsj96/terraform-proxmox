@@ -141,7 +141,7 @@ resource "proxmox_virtual_environment_vm" "ubuntu_vms" {
 
 resource "proxmox_virtual_environment_download_file" "latest_ubuntu_22_jammy_qcow2_img" {
   content_type = "iso"
-  datastore_id = "local"
+  datastore_id = "snippetsogISO"
   node_name    = "hp1"
   url          = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
 }

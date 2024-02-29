@@ -1,8 +1,6 @@
-
-
 resource "proxmox_virtual_environment_file" "cloud_config" {
   content_type = "snippets"
-  datastore_id = "local"
+  datastore_id = "snippetsogISO"
   node_name    = "hp1"
 
   source_raw {
@@ -16,82 +14,23 @@ users:
     shell: /bin/bash
     ssh_authorized_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDogMdWfrqX1XAc231blwxM9x3STfWdTZ84n+vu3/WM+p+6GS1Ob3FMWZB5ob1hatbrGt1ciBwbuGSiNgNWfInuOFWeF6AnBKszbuqA0q/0qTg94etDBXfG7onuAQOCH+YeosuSj2GsgdQEpGV8z2UasDICnpWjzkZ9E3Bl2pEiPCtC+lT4AB2IqL+z+Npvi1PnZ1B9JThEFioT5Ja3AOLhMxkIOgLHos7ksjlc6u9QMU3pgFHvAjYWS8plusYwrtPVHQ+8YQQvpklMaTdJOSaGCbHEwvjmItI5AxHl6IvcnpFTAhLbnmE6YaiEfGudwI9RmDeWu5/jBdmjpB4c26ZrBYnJYhB8Gr62uGydKTLFJzUXDokpFtUjEDFLRAKnWfu1wddMej3UuT1IC0L6u+hjwk78oPdsPfFgTMLL8RCHaFsgmSNCCVLLy+CWbleze3+ihs+Bs+SiGDvcT9m3zxusa7IFg6cTz4mcAqVZ/ZYvQ9Vj2BCoKr2ppmvNiJcZGmc= lanil@AZTEK-PC27RF42"
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCz/JZYBglJD0gw7t+0dABSpnwNFxel+o0DjdHsxQki/mKXvSe9Ah/udCLXI1KZFLxoFHOJkcglFYBG3ht2LO2WfGKTbrTMVi8L7ly4ZuNvNACeMxPbxULKLLa4VCJdYgeM7BNk6N5VCzQbfexw7ULVoRhRfnawp9Y4DDZ1GaGW4bA3L+9KFPkLgIv6hn/tJGUdZDfyc60RaTArEcOeKbwxB2Ds5Y8fiVFrXCBV9UE6nr5OYqXftd6Y9Z5W4C69Qekus4IHNlktF1ofu4bZl2YlYC2MlhcRsU0txVnby3z0JqnfjpdrrO/hszKookivv+apMzdZq8on3ubg544wfv8zlbO/4nnM5oUmw2zD1BSOXsnsmg4CwRPAR/Znn2hu5YYQVWF0xegDSqMslBVu2vKIbgZa8gzJtYi+9/zeYBj9pW+/VfP3pjwZh9dqeTbz13KtMiOHuB2MNEp+eOUw+yvGhp2BbjWFaX0Xy+X5Q8V9TkbzqiDSqY7aUCdHOou1Xlc= ljn@DESKTOP-DFCHU80"
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCpruL39xAMiQi6H1UxPLot9c/5r2dnkzA5Mo9WhDMlG+LCFaJiOil5uoKqdW14HPOulROqLKeWTAX+qoLa9UpOqbnSms3sEwFEcRomvRUYGw+DSwOgsKuV72cx9jm7MdqnOUybZWZ0nPqd+fMOKPb7U4x3T3pJApBCkOa5nk6H73CvlN9J9fY0oeBNJpQPjrI4VUeYRluqO58MkanYGA6v86ByCxgOwrHCb+htacHu4D9wcNcAkbEyJYe5YmQnwm/yu5EGSAbQ7f65tmQbSruPbieVaiSxxn3Ev3T9NAWXEM7dBSvZ5T7bDxxb+RslKWZMwsN1dUZFjwZg/khB2UdNVlobQHoT5PMq1sN7a/hkpL35AoPvwGvldd4N7IciGiiukC8ZJDh7efomPUdQQ5itdTe6SybiaVTttOQA0v8ZwA2l/oOvzodD1sEWCLowyZu0AiryfxbjFvG7mEb1N4aGeP0aBKPSCHOheu6ow4QpfrWWO+gI4pkMXuEuT+Xx7IE= l. nilsen@DESKTOP-DFCHU80"
     sudo: ALL=(ALL) NOPASSWD:ALL
+    chpasswd: 
+      list: |
+        ubuntu:ubuntu ## Overriding default username, password
+      expire: false ## Forcing user to change the default password at first login
 runcmd:
-    - apt update
-    - apt install -y qemu-guest-agent net-tools
-    - timedatectl set-timezone Europe/Oslo
-    - systemctl enable qemu-guest-agent
-    - systemctl start qemu-guest-agent
-    - echo "done" > /tmp/cloud-config.done
-    EOF
+  - apt update
+  - apt install -y qemu-guest-agent net-tools
+  - timedatectl set-timezone Europe/Oslo
+  - systemctl enable qemu-guest-agent
+  - systemctl start qemu-guest-agent
+  - echo "done" > /tmp/cloud-config.done
+  - sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
+EOF
 
     file_name = "cloud-config.yaml"
   }
 }
-
-
-
-
-
-# resource "proxmox_virtual_environment_file" "cloud_config" {
-#   content_type = "snippets"
-#   datastore_id = "local"
-#   node_name    = "pve01"
-#   source_raw {
-#     data = <<EOF
-# #cloud-config
-# #fjasjasdas
-# chpasswd:
-#   expire: False
-# users:
-#   - default
-#   - name: devops
-#     groups: sudo
-#     shell: /bin/bash
-#     ssh-authorized-keys:
-#       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCYcEX+zLVBq4R+WhCCHqAAnhzyYMzTgfiGAb0bMz0WeYXR1As2+RzdZ3zkC9TGjFJj3jvGhKgcF7xyZxpakOkQXigkox2kQFBlpq4vmek+/Zf9TFiNBTHgp+IpI4oL9xmdbfyfZqo/JMHOX8fYjpR+y6enzKa3pxHk59Nbjb0DXODpwAHqjf52cTR1abCdr6mMSOvLtAqBbRJEF1vwJ2evXjzabpG/mOH23YgZwiKx1t+kSyNaxFLp9zCsiXmGPGXjCiPXjiFO64ANZ2m+lrDhAsjSAQjptxJFLU3ZzP2fyASXugGpCV55kBn0v+s+hukD96LE/L6nFex6idO6MSL1hQx+w/8tU4Gc6VJ9UNMpcaDqMbJo3hQYF5CDw9u6R9S5hnLpX3KGn71bkUsSLG+aULJG8McQpFDvBaFCcbUx6k+DA2Y97I2OO+PRet8TtHM8cigRb8+Y1F/cm39FwCWptYKny9f6T+Tj5UMDVotd2cSqEy+ol8zIk3pZphF4mrM= lindelien@linbast.hoeg.li
-#     sudo: ALL=(ALL) NOPASSWD:ALL
-# EOF
-
-#     file_name = "cloud-config.yaml"
-#   }
-
-
-
-#   source_raw {
-#     data = <<EOF
-# #cloud-config
-# packages:
-#   - qemu-guest-agent
-# runcmd:
-#   - systemctl enable --now qemu-guest-agent
-# EOF
-
-#     file_name = "cloud-config.yaml"
-#   }
-# }
-
-# cloud_init_modules:
-#   - migrator
-#   - seed_random
-#   - bootcmd
-#   - write_files
-#   - growpart
-#   - resizefs
-#   - disk_setup
-#   - mounts
-#   - ca_certs
-#   - rsyslog
-#   - users_groups
-#   - ssh
-
-# users:
-#   - default
-#   - name: devops
-#     groups: sudo
-#     shell: /bin/bash
-#     ssh-authorized-keys:
-#       - ${trimspace(tls_private_key.ubuntu_vm_key.public_key_openssh)}
-#     sudo: ALL=(ALL) NOPASSWD:ALL
-
