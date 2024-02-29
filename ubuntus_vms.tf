@@ -42,7 +42,13 @@ locals {
       "memory"   = "16192"
       "disksize" = 125
       vlan       = "12"
+    }
 
+     gitlabrunner1 = {
+      "num_cpus" = "4"
+      "memory"   = "32192"
+      "disksize" = 100
+      vlan       = "14"
     }
 
   }
