@@ -1,6 +1,4 @@
 Project Structure:
-Folder
-Copy code
 │
 ├── backend.tf              # Configuration for backend on Terraform Cloud
 ├── main.tf                 # Main Terraform configuration file
@@ -14,14 +12,13 @@ Copy code
 Explanation:
 ubuntus_vms.tf: This file defines local variables and resources for creating Ubuntu virtual machines on Proxmox.
 
-Local Variables (locals block): Defines a map called ubuntu_vms containing specifications for various Ubuntu virtual machines, each identified by a unique name (e.g., ubuntu-master1, ubuntu-work1). Specifications include the number of CPUs (num_cpus), memory (memory), disk size (disksize), and VLAN (vlan).
+Local Variables (locals block): Defines a map called ubuntu_vms containing specifications for various Ubuntu virtual machines, each identified by a unique name (e.g., ubuntu-master1, ubuntu-work1). Specifications include the number of CPUs, memory, disksize and VLAN.
 Resource proxmox_virtual_environment_vm: This resource is used to define the configuration for each Ubuntu virtual machine. It iterates over the local.ubuntu_vms map using for_each, creating a virtual machine for each entry.
 name: Specifies the name of the virtual machine.
 description: Description of the virtual machine.
 tags: Tags associated with the virtual machine.
-node_name: Name of the Proxmox node where the virtual machine will be created.
-... (additional blocks explained)
-Resource proxmox_virtual_environment_download_file: Downloads the Ubuntu cloud image specified by the URL.
+node_name: Name of the Proxmox node (Hypervisor) where the virtual machine will be created.
+Resource proxmox_virtual_environment_download_file: Downloads the Ubuntu cloud image specified by the URL, i have it on CEPH NVME storage
 
 Additional Notes:
 
