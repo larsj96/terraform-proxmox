@@ -51,6 +51,13 @@ locals {
       vlan       = "14"
     }
 
+      sftp1 = {
+      "num_cpus" = "4"
+      "memory"   = "32192"
+      "disksize" = 100
+      vlan       = "18"
+    }
+
   }
 }
 
@@ -130,8 +137,11 @@ resource "proxmox_virtual_environment_vm" "ubuntu_vms" {
  lifecycle { 
    ignore_changes = [
       initialization,
+        disk[0].file_id, // Specify the index of the disk if there are multiple disks
+        node_name # ignore if we migrate VMS to another proxmox node
    ]
  }
+
 
 
 }
@@ -142,3 +152,4 @@ resource "proxmox_virtual_environment_download_file" "latest_ubuntu_22_jammy_qco
   node_name    = "hp1"
   url          = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
 }
+
