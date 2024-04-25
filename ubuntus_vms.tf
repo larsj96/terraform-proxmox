@@ -55,7 +55,7 @@ locals {
       "num_cpus" = "4"
       "memory"   = "32192"
       "disksize" = 100
-      vlan       = "18"
+      vlan       = "119"
     }
 
   }
