@@ -9,12 +9,12 @@ resource "proxmox_virtual_environment_vm" "bastion01" {
   scsi_hardware = "virtio-scsi-single"
 
   cpu {
-    cores = 2
+    cores = 4
     type  = "x86-64-v2-AES"
   }
 
   memory {
-    dedicated = 2048
+    dedicated = 32768
   }
 
   agent {
@@ -34,7 +34,7 @@ resource "proxmox_virtual_environment_vm" "bastion01" {
     datastore_id = var.target_storage
     file_id      = proxmox_virtual_environment_download_file.ubuntu_noble_cloud_image.id
     interface    = "scsi0"
-    size         = 32
+    size         = 200
     iothread     = true
     discard      = "on"
   }
@@ -54,7 +54,7 @@ resource "proxmox_virtual_environment_vm" "bastion01" {
 
     user_account {
       username = var.vm_username
-      keys     = var.vm_ssh_public_keys
+      keys     = [var.workstation_ssh_public_key]
     }
   }
 
