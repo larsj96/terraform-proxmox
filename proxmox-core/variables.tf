@@ -49,7 +49,7 @@ variable "image_storage" {
 variable "snippets_storage" {
   description = "Storage ID that supports Proxmox snippets for custom cloud-init user-data."
   type        = string
-  default     = "snippetsogISO"
+  default     = "local"
 }
 
 variable "pool_name" {
