@@ -18,10 +18,23 @@ Minimal first-VM Terraform scaffold for the live homelab.
 
 ## Required Runner Details
 
+State is stored in HCP Terraform/Terraform Cloud workspace `terraform-proxmox-core`.
+
+Set these before `terraform init`:
+
+```bash
+export TF_CLOUD_ORGANIZATION="your-tfc-org"
+export TF_TOKEN_app_terraform_io="your-user-or-team-token"
+```
+
+For local CLI use, Terraform can also store the token in `~/.terraform.d/credentials.tfrc.json`. Do not commit that file.
+
 Run Terraform from the Frankfurt VPS with Docker host networking so the container inherits the working IPsec route/source selection:
 
 ```bash
 docker run --rm --network host \
+  -e TF_CLOUD_ORGANIZATION \
+  -e TF_TOKEN_app_terraform_io \
   -e PROXMOX_VE_ENDPOINT \
   -e PROXMOX_VE_INSECURE \
   -e PROXMOX_VE_API_TOKEN \
@@ -33,6 +46,8 @@ docker run --rm --network host \
 ```
 
 The provider SSH node override must point `hp1` at `10.0.0.162`; otherwise the provider may try the old local-only node address `192.168.13.4`.
+
+If the workspace is VCS-driven in Terraform Cloud, connect only the repo/folder that owns this state. For this repo that means `terraform-proxmox` with working directory `proxmox-core`, using the agent pool that can reach the homelab through the Frankfurt VPS.
 
 ## Live Test Result
 
