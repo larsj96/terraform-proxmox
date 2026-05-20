@@ -131,9 +131,21 @@ variable "vm_username" {
 }
 
 variable "vm_ssh_public_keys" {
-  description = "SSH public keys for the cloud-init user."
+  description = "SSH public keys for new cloud-init VMs. Include workstation and bastion keys for future admin/Ansible workflows."
   type        = list(string)
   default     = []
+}
+
+variable "workstation_ssh_public_key" {
+  description = "Primary workstation SSH public key for the bastion VM."
+  type        = string
+  default     = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL6rilckgv40NViw/SrFwiGMbWeaxc/pT6yE8GGoOcKS ljn@WORKSTATION"
+}
+
+variable "bastion_ssh_public_key" {
+  description = "SSH public key generated on bastion01 for access to future VMs."
+  type        = string
+  default     = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEPk8EwvWaugg+Cmj3JBgHzTJEj4nM2BNdPSu/0LRuw ubuntu@bastion01"
 }
 
 variable "ubuntu_cloud_image_url" {
