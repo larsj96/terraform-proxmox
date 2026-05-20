@@ -46,6 +46,12 @@ variable "image_storage" {
   default     = "local"
 }
 
+variable "snippets_storage" {
+  description = "Storage ID that supports Proxmox snippets for custom cloud-init user-data."
+  type        = string
+  default     = "snippetsogISO"
+}
+
 variable "pool_name" {
   description = "Optional Proxmox pool for Terraform-managed workloads."
   type        = string
@@ -131,7 +137,7 @@ variable "vm_username" {
 }
 
 variable "vm_ssh_public_keys" {
-  description = "SSH public keys for new cloud-init VMs. Include workstation and bastion keys for future admin/Ansible workflows."
+  description = "SSH public keys for the cloud-init user."
   type        = list(string)
   default     = []
 }
