@@ -1,5 +1,13 @@
 *.tfstate
+*.tfstate.backup
+*.tfvars
+!*.tfvars.example
+*.tfvars.json
+!*.tfvars.json.example
+.terraform/
+.terraform.d/
+.terraformrc
+terraform.rc
+credentials.tfrc.json
 *.lock.hcl
-.terraform/*
 terraform-plugin-proxmox.log
-*tfstate.backup
