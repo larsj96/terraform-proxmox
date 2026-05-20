@@ -4,6 +4,7 @@ proxmox_ssh_node_address = "10.0.0.162"
 target_node_name         = "hp1"
 target_storage           = "nvme-local"
 image_storage            = "local"
+snippets_storage         = "snippetsogISO"
 pool_name                = "homelab"
 vm_id                    = 9001
 vm_name                  = "ubuntu-noble-test-01"
@@ -19,5 +20,8 @@ vm_ipv4_gateway          = "10.0.0.161"
 vm_dns_servers           = ["1.1.1.1", "8.8.8.8"]
 vm_username              = "ubuntu"
 vm_ssh_public_keys = [
-  "ssh-ed25519 replace-me"
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL6rilckgv40NViw/SrFwiGMbWeaxc/pT6yE8GGoOcKS ljn@WORKSTATION",
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEPk8EwvWaugg+Cmj3JBgHzTJEj4nM2BNdPSu/0LRuw ubuntu@bastion01"
 ]
+workstation_ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL6rilckgv40NViw/SrFwiGMbWeaxc/pT6yE8GGoOcKS ljn@WORKSTATION"
+bastion_ssh_public_key     = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEPk8EwvWaugg+Cmj3JBgHzTJEj4nM2BNdPSu/0LRuw ubuntu@bastion01"
