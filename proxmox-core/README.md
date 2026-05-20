@@ -16,25 +16,62 @@ Minimal first-VM Terraform scaffold for the live homelab.
 - one downloaded Ubuntu cloud image on `local`
 - cloud-init user, SSH keys, DHCP networking, and guest agent enablement
 
-## Required Runner Details
+## State Backend
 
-State is stored in HCP Terraform/Terraform Cloud workspace `terraform-proxmox-core`.
+State is stored in an S3-compatible backend, not HCP Terraform, to avoid the managed resource billing limit. Cloudflare R2 is the preferred target because it is cheap, S3-compatible, and already fits the Cloudflare side of the homelab.
 
-Set these before `terraform init`:
+Create a private R2 bucket:
 
 ```bash
-export TF_CLOUD_ORGANIZATION="your-tfc-org"
-export TF_TOKEN_app_terraform_io="your-user-or-team-token"
+export CLOUDFLARE_ACCOUNT_ID="your-cloudflare-account-id"
+export CLOUDFLARE_API_TOKEN="token-with-r2-bucket-edit"
+./scripts/create-r2-state-bucket.sh
 ```
 
-For local CLI use, Terraform can also store the token in `~/.terraform.d/credentials.tfrc.json`. Do not commit that file.
+Then write the ignored backend config:
 
-Run Terraform from the Frankfurt VPS with Docker host networking so the container inherits the working IPsec route/source selection:
+```bash
+./scripts/write-r2-backend-config.sh
+```
+
+Set R2 credentials before `terraform init`:
+
+```bash
+export AWS_ACCESS_KEY_ID="your-r2-access-key-id"
+export AWS_SECRET_ACCESS_KEY="your-r2-secret-access-key"
+terraform init -backend-config=backend.r2.tfbackend
+```
+
+To migrate existing local/HCP Terraform state into R2, run:
+
+```bash
+terraform init -migrate-state -backend-config=backend.r2.tfbackend
+```
+
+The backend enables S3 native lock files with `use_lockfile = true`, so normal CLI runs from the VPS or workstation get state locking without DynamoDB and without HCP Terraform managed-resource billing.
+
+## Required Runner Details
+
+The provider SSH node override must point `hp1` at `10.0.0.162`; otherwise the provider may try the old local-only node address `192.168.13.4`.
+
+For apply runs from the Frankfurt VPS with Docker host networking:
 
 ```bash
 docker run --rm --network host \
-  -e TF_CLOUD_ORGANIZATION \
-  -e TF_TOKEN_app_terraform_io \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
+  -e PROXMOX_VE_ENDPOINT \
+  -e PROXMOX_VE_INSECURE \
+  -e PROXMOX_VE_API_TOKEN \
+  -e TF_VAR_proxmox_api_token \
+  -e TF_VAR_proxmox_ssh_password \
+  -v "$PWD:/workspace" \
+  -w /workspace \
+  hashicorp/terraform:latest init -backend-config=backend.r2.tfbackend
+
+docker run --rm --network host \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
   -e PROXMOX_VE_ENDPOINT \
   -e PROXMOX_VE_INSECURE \
   -e PROXMOX_VE_API_TOKEN \
@@ -45,9 +82,7 @@ docker run --rm --network host \
   hashicorp/terraform:latest apply
 ```
 
-The provider SSH node override must point `hp1` at `10.0.0.162`; otherwise the provider may try the old local-only node address `192.168.13.4`.
-
-If the workspace is VCS-driven in Terraform Cloud, connect only the repo/folder that owns this state. For this repo that means `terraform-proxmox` with working directory `proxmox-core`, using the agent pool that can reach the homelab through the Frankfurt VPS.
+If a repo needs VCS-driven plans/applies, prefer GitHub Actions or another CI runner on the Frankfurt VPS over HCP Terraform VCS workspaces. That keeps state in R2 and avoids counting every Proxmox/Fortigate/Cloudflare object as an HCP Terraform managed resource.
 
 ## Live Test Result
 
