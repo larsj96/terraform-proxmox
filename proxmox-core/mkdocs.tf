@@ -40,7 +40,8 @@ resource "proxmox_virtual_environment_vm" "mkdocs" {
   }
 
   initialization {
-    datastore_id = var.target_storage
+    datastore_id       = var.target_storage
+    user_data_file_id = proxmox_virtual_environment_file.noble_base_cloud_config.id
 
     dns {
       servers = var.vm_dns_servers
@@ -54,7 +55,7 @@ resource "proxmox_virtual_environment_vm" "mkdocs" {
 
     user_account {
       username = var.vm_username
-      keys     = var.vm_ssh_public_keys
+      keys     = local.default_ssh_public_keys
     }
   }
 
