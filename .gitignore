@@ -4,10 +4,13 @@
 !*.tfvars.example
 *.tfvars.json
 !*.tfvars.json.example
+*.tfbackend
+!*.tfbackend.example
 .terraform/
 .terraform.d/
 .terraformrc
 terraform.rc
 credentials.tfrc.json
+*.auto.tfvars
 *.lock.hcl
 terraform-plugin-proxmox.log
