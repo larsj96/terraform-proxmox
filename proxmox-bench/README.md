@@ -9,7 +9,8 @@ Default VMs:
 | `bench-hp1` | `hp1` | `nvme-local` | 9301 | 4 cores | 8 GiB | 100 GiB |
 | `bench-hp2` | `hp2` | `nvme-local` | 9302 | 4 cores | 8 GiB | 100 GiB |
 | `bench-hp3` | `hp3` | `nvme-local` | 9303 | 4 cores | 8 GiB | 100 GiB |
-| `bench-dell1` | `dell1` | `nvme-dell` | 9304 | 4 cores | 8 GiB | 100 GiB |
+| `bench-hp3-sas` | `hp3` | `sas-hp3` | 9304 | 4 cores | 8 GiB | 100 GiB |
+| `bench-dell1` | `dell1` | `nvme-dell` | 9305 | 4 cores | 8 GiB | 100 GiB |
 
 The default map deploys the HP targets. Dell is kept in `benchmark-vms-with-dell.tfvars.example` because the Dell node is not currently a healthy member of the HP cluster API. Enable it when Dell is rejoined or managed by a dedicated standalone stack.
 
@@ -20,6 +21,7 @@ Prerequisite: `local:iso/ubuntu-24.04-server-cloudimg-amd64.img` must exist on e
 Storage notes:
 
 - `nvme-local` is a cluster storage ID backed by each HP node's local NVMe LVM-thin pool. A VM on `hp1` uses hp1 local NVMe, a VM on `hp2` uses hp2 local NVMe, and a VM on `hp3` uses hp3 local NVMe.
+- `sas-hp3` is a local hp3 LVM-thin pool backed by the 4.9 TB SAS logical volume.
 - `nvme-dell` is the Dell node's local NVMe-backed storage. Keep Dell results separate from HP results because the server is not considered reliable for future cluster design decisions.
 
 ```bash

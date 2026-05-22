@@ -106,5 +106,13 @@ variable "benchmark_vms" {
       memory  = 8192
       disk_gb = 100
     }
+    bench-hp3-sas = {
+      vm_id   = 9304
+      node    = "hp3"
+      storage = "sas-hp3"
+      cores   = 4
+      memory  = 8192
+      disk_gb = 100
+    }
   }
 }
