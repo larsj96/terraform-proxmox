@@ -106,13 +106,5 @@ variable "benchmark_vms" {
       memory  = 8192
       disk_gb = 100
     }
-    bench-dell1 = {
-      vm_id   = 9304
-      node    = "dell1"
-      storage = "nvme-dell"
-      cores   = 4
-      memory  = 8192
-      disk_gb = 100
-    }
   }
 }

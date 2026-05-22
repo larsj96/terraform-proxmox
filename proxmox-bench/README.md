@@ -11,6 +11,8 @@ Default VMs:
 | `bench-hp3` | `hp3` | `nvme-local` | 9303 | 4 cores | 8 GiB | 100 GiB |
 | `bench-dell1` | `dell1` | `nvme-dell` | 9304 | 4 cores | 8 GiB | 100 GiB |
 
+The default map deploys the HP targets. Dell is kept in `benchmark-vms-with-dell.tfvars.example` because the Dell node is not currently a healthy member of the HP cluster API. Enable it when Dell is rejoined or managed by a dedicated standalone stack.
+
 The VMs are disposable. Use Ansible to run the benchmark and collect results, then destroy this stack when done.
 
 Prerequisite: `local:iso/ubuntu-24.04-server-cloudimg-amd64.img` must exist on each target node. The benchmark stack intentionally does not manage the image file so repeated temporary runs do not fight existing Proxmox ISO files.

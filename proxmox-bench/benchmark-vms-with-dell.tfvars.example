@@ -1,0 +1,34 @@
+benchmark_vms = {
+  bench-hp1 = {
+    vm_id   = 9301
+    node    = "hp1"
+    storage = "nvme-local"
+    cores   = 4
+    memory  = 8192
+    disk_gb = 100
+  }
+  bench-hp2 = {
+    vm_id   = 9302
+    node    = "hp2"
+    storage = "nvme-local"
+    cores   = 4
+    memory  = 8192
+    disk_gb = 100
+  }
+  bench-hp3 = {
+    vm_id   = 9303
+    node    = "hp3"
+    storage = "nvme-local"
+    cores   = 4
+    memory  = 8192
+    disk_gb = 100
+  }
+  bench-dell1 = {
+    vm_id   = 9304
+    node    = "dell1"
+    storage = "nvme-dell"
+    cores   = 4
+    memory  = 8192
+    disk_gb = 100
+  }
+}
