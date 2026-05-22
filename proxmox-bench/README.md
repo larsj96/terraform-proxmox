@@ -12,6 +12,8 @@ Default VMs:
 
 The VMs are disposable. Use Ansible to run the benchmark and collect results, then destroy this stack when done.
 
+Prerequisite: `local:iso/ubuntu-24.04-server-cloudimg-amd64.img` must exist on each target node. The benchmark stack intentionally does not manage the image file so repeated temporary runs do not fight existing Proxmox ISO files.
+
 ```bash
 cp backend.r2.tfbackend.example backend.r2.tfbackend
 terraform init -backend-config=backend.r2.tfbackend

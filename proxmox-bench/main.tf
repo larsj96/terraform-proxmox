@@ -3,15 +3,6 @@ locals {
   ssh_keys        = distinct([var.workstation_ssh_public_key, var.bastion_ssh_public_key])
 }
 
-resource "proxmox_virtual_environment_download_file" "ubuntu_noble_cloud_image" {
-  for_each = local.benchmark_nodes
-
-  content_type = "iso"
-  datastore_id = var.image_storage
-  node_name    = each.key
-  url          = var.ubuntu_cloud_image_url
-}
-
 resource "proxmox_virtual_environment_file" "bench_cloud_config" {
   for_each = local.benchmark_nodes
 
@@ -75,7 +66,7 @@ resource "proxmox_virtual_environment_vm" "benchmark" {
 
   disk {
     datastore_id = var.target_storage
-    file_id      = proxmox_virtual_environment_download_file.ubuntu_noble_cloud_image[each.value.node].id
+    file_id      = var.ubuntu_cloud_image_file_id
     interface    = "scsi0"
     size         = each.value.disk_gb
     iothread     = true

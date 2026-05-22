@@ -37,7 +37,13 @@ variable "image_storage" {
 variable "snippets_storage" {
   description = "Storage ID that supports Proxmox snippets for custom cloud-init user-data."
   type        = string
-  default     = "snippetsogISO"
+  default     = "local"
+}
+
+variable "ubuntu_cloud_image_file_id" {
+  description = "Existing Ubuntu cloud image file ID available on each target node."
+  type        = string
+  default     = "local:iso/ubuntu-24.04-server-cloudimg-amd64.img"
 }
 
 variable "vm_bridge" {
@@ -68,12 +74,6 @@ variable "bastion_ssh_public_key" {
   description = "SSH public key generated on bastion01."
   type        = string
   default     = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEPk8EwvWaugg+Cmj3JBgHzTJEj4nM2BNdPSu/0LRuw ubuntu@bastion01"
-}
-
-variable "ubuntu_cloud_image_url" {
-  description = "Pinned Ubuntu cloud image URL for repeatable benchmark VM bootstraps."
-  type        = string
-  default     = "https://cloud-images.ubuntu.com/releases/noble/release-20260518/ubuntu-24.04-server-cloudimg-amd64.img"
 }
 
 variable "benchmark_vms" {
