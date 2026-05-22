@@ -22,12 +22,6 @@ variable "proxmox_ssh_password" {
   sensitive   = true
 }
 
-variable "target_storage" {
-  description = "Storage ID for benchmark VM disks."
-  type        = string
-  default     = "nvme-local"
-}
-
 variable "image_storage" {
   description = "Storage ID used to download the Ubuntu cloud image."
   type        = string
@@ -41,7 +35,7 @@ variable "snippets_storage" {
 }
 
 variable "ubuntu_cloud_image_file_id" {
-  description = "Existing Ubuntu cloud image file ID available on each target node."
+  description = "Default existing Ubuntu cloud image file ID available on each target node."
   type        = string
   default     = "local:iso/ubuntu-24.04-server-cloudimg-amd64.img"
 }
@@ -77,18 +71,21 @@ variable "bastion_ssh_public_key" {
 }
 
 variable "benchmark_vms" {
-  description = "Temporary benchmark VMs, normally one per HP Proxmox node."
+  description = "Temporary benchmark VMs, normally one per node/local NVMe storage target."
   type = map(object({
-    vm_id   = number
-    node    = string
-    cores   = number
-    memory  = number
-    disk_gb = number
+    vm_id         = number
+    node          = string
+    storage       = string
+    cores         = number
+    memory        = number
+    disk_gb       = number
+    image_file_id = optional(string)
   }))
   default = {
     bench-hp1 = {
       vm_id   = 9301
       node    = "hp1"
+      storage = "nvme-local"
       cores   = 4
       memory  = 8192
       disk_gb = 100
@@ -96,6 +93,7 @@ variable "benchmark_vms" {
     bench-hp2 = {
       vm_id   = 9302
       node    = "hp2"
+      storage = "nvme-local"
       cores   = 4
       memory  = 8192
       disk_gb = 100
@@ -103,6 +101,15 @@ variable "benchmark_vms" {
     bench-hp3 = {
       vm_id   = 9303
       node    = "hp3"
+      storage = "nvme-local"
+      cores   = 4
+      memory  = 8192
+      disk_gb = 100
+    }
+    bench-dell1 = {
+      vm_id   = 9304
+      node    = "dell1"
+      storage = "nvme-dell"
       cores   = 4
       memory  = 8192
       disk_gb = 100

@@ -21,5 +21,10 @@ provider "proxmox" {
       name    = "hp3"
       address = "10.0.0.164"
     }
+
+    node {
+      name    = "dell1"
+      address = "10.0.0.165"
+    }
   }
 }

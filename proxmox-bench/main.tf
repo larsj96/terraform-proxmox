@@ -65,8 +65,8 @@ resource "proxmox_virtual_environment_vm" "benchmark" {
   }
 
   disk {
-    datastore_id = var.target_storage
-    file_id      = var.ubuntu_cloud_image_file_id
+    datastore_id = each.value.storage
+    file_id      = coalesce(each.value.image_file_id, var.ubuntu_cloud_image_file_id)
     interface    = "scsi0"
     size         = each.value.disk_gb
     iothread     = true
@@ -74,7 +74,7 @@ resource "proxmox_virtual_environment_vm" "benchmark" {
   }
 
   initialization {
-    datastore_id      = var.target_storage
+    datastore_id      = each.value.storage
     user_data_file_id = proxmox_virtual_environment_file.bench_cloud_config[each.value.node].id
 
     dns {
