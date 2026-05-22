@@ -73,7 +73,7 @@ variable "workstation_ssh_public_key" {
 variable "bastion_ssh_public_key" {
   description = "SSH public key generated on bastion01."
   type        = string
-  default     = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEPk8EwvWaugg+Cmj3JBgHzTJEj4nM2BNdPSu/0LRuw ubuntu@bastion01"
+  default     = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDA6/AtLMyDq7wIPTD8vh0Rf5KBWd0pk22CK8Zn6vWlO ubuntu@bastion01"
 }
 
 variable "benchmark_vms" {
