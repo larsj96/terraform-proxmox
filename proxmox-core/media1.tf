@@ -1,8 +1,8 @@
 resource "proxmox_virtual_environment_vm" "media1" {
   vm_id         = 9050
   name          = "media1"
-  description   = "Media automation and first Plex host managed by Terraform"
-  node_name     = var.target_node_name
+  description   = "Media automation and first Plex host managed by Terraform. Boot on NVMe, bulk media on hp3 SAS."
+  node_name     = var.media_node_name
   tags          = ["terraform", "ubuntu", "media", "docker", "plex"]
   on_boot       = true
   started       = true
@@ -31,16 +31,24 @@ resource "proxmox_virtual_environment_vm" "media1" {
   }
 
   disk {
-    datastore_id = var.target_storage
+    datastore_id = var.media_boot_storage
     file_id      = proxmox_virtual_environment_download_file.ubuntu_noble_cloud_image.id
     interface    = "scsi0"
-    size         = 250
+    size         = var.media_boot_disk_size_gb
+    iothread     = true
+    discard      = "on"
+  }
+
+  disk {
+    datastore_id = var.media_data_storage
+    interface    = "scsi1"
+    size         = var.media_data_disk_size_gb
     iothread     = true
     discard      = "on"
   }
 
   initialization {
-    datastore_id      = var.target_storage
+    datastore_id      = var.media_boot_storage
     user_data_file_id = proxmox_virtual_environment_file.noble_base_cloud_config.id
 
     dns {
@@ -62,7 +70,6 @@ resource "proxmox_virtual_environment_vm" "media1" {
   lifecycle {
     ignore_changes = [
       disk[0].file_id,
-      node_name,
     ]
   }
 }

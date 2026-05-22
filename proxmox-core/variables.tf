@@ -40,6 +40,36 @@ variable "target_storage" {
   default     = "nvme-local"
 }
 
+variable "media_node_name" {
+  description = "Proxmox node for media1. Pin this near the media storage instead of using the generic target node."
+  type        = string
+  default     = "hp3"
+}
+
+variable "media_boot_storage" {
+  description = "Storage ID for media1 OS and application/config disk."
+  type        = string
+  default     = "nvme-local"
+}
+
+variable "media_data_storage" {
+  description = "Storage ID for media1 bulk media data disk."
+  type        = string
+  default     = "sas-hp3"
+}
+
+variable "media_boot_disk_size_gb" {
+  description = "media1 boot/app disk size in GiB."
+  type        = number
+  default     = 120
+}
+
+variable "media_data_disk_size_gb" {
+  description = "media1 bulk media data disk size in GiB."
+  type        = number
+  default     = 4000
+}
+
 variable "image_storage" {
   description = "Storage ID used to download the Ubuntu cloud image."
   type        = string
@@ -151,7 +181,7 @@ variable "workstation_ssh_public_key" {
 variable "bastion_ssh_public_key" {
   description = "SSH public key generated on bastion01 for access to future VMs."
   type        = string
-  default     = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEPk8EwvWaugg+Cmj3JBgHzTJEj4nM2BNdPSu/0LRuw ubuntu@bastion01"
+  default     = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDA6/AtLMyDq7wIPTD8vh0Rf5KBWd0pk22CK8Zn6vWlO ubuntu@bastion01"
 }
 
 variable "ubuntu_cloud_image_url" {

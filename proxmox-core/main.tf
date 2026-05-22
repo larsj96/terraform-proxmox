@@ -51,7 +51,7 @@ resource "proxmox_virtual_environment_vm" "ubuntu_test" {
   }
 
   initialization {
-    datastore_id       = var.target_storage
+    datastore_id      = var.target_storage
     user_data_file_id = proxmox_virtual_environment_file.noble_base_cloud_config.id
 
     dns {

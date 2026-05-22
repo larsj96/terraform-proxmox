@@ -9,8 +9,18 @@ provider "proxmox" {
     password = var.proxmox_ssh_password
 
     node {
-      name    = var.target_node_name
-      address = var.proxmox_ssh_node_address
+      name    = "hp1"
+      address = "10.0.0.162"
+    }
+
+    node {
+      name    = "hp2"
+      address = "10.0.0.163"
+    }
+
+    node {
+      name    = "hp3"
+      address = "10.0.0.164"
     }
   }
 }
