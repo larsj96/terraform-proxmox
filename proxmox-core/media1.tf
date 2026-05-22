@@ -34,6 +34,7 @@ resource "proxmox_virtual_environment_vm" "media1" {
     datastore_id = var.media_boot_storage
     file_id      = proxmox_virtual_environment_download_file.ubuntu_noble_cloud_image.id
     interface    = "scsi0"
+    file_format  = "raw"
     size         = var.media_boot_disk_size_gb
     iothread     = true
     discard      = "on"
@@ -42,6 +43,7 @@ resource "proxmox_virtual_environment_vm" "media1" {
   disk {
     datastore_id = var.media_data_storage
     interface    = "scsi1"
+    file_format  = "raw"
     size         = var.media_data_disk_size_gb
     iothread     = true
     discard      = "on"
