@@ -14,6 +14,18 @@ resource "proxmox_virtual_environment_file" "bench_cloud_config" {
     file_name = "terraform-benchmark-cloud-config-${each.key}.yaml"
     data      = <<-EOF
       #cloud-config
+      users:
+        - default
+        - name: ${var.vm_username}
+          groups: sudo
+          shell: /bin/bash
+          sudo: ALL=(ALL) NOPASSWD:ALL
+          lock_passwd: true
+          ssh_authorized_keys:
+      %{~for key in local.ssh_keys~}
+            - ${key}
+      %{~endfor~}
+      ssh_pwauth: false
       package_update: true
       packages:
         - qemu-guest-agent
