@@ -31,13 +31,13 @@ variable "image_storage" {
 variable "snippets_storage" {
   description = "Storage ID that supports Proxmox snippets for custom cloud-init user-data."
   type        = string
-  default     = "local"
+  default     = "nvme-files"
 }
 
 variable "ubuntu_cloud_image_file_id" {
   description = "Default existing Ubuntu cloud image file ID available on each target node."
   type        = string
-  default     = "local:iso/ubuntu-24.04-server-cloudimg-amd64.img"
+  default     = "nvme-files:iso/noble-server-cloudimg-amd64.img"
 }
 
 variable "vm_bridge" {
